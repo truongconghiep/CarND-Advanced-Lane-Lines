@@ -1,12 +1,37 @@
-## Writeup Template
+# Advanced land finding project
 
-### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
+**Hiep Truong Cong**
+
+[//]: # (Image References)
+
+[image1]: ./output_images/undistort_output.png "Undistorted"
+[image2]: ./output_images/Distortion_Correction.jpg "Distortion Correction"
+[image2]: ./output_images/WhiteAndYellowMasking.jpg "White and yellow masking"
+[image3]: ./output_images/binary_thresholding.jpg "Binary thresholding"
+[image4]: ./output_images/Direction_Gradient_Thresholding.jpg "Direction gradient"
+[image5]: ./output_images/Combined_Thresholding.jpg "Combined thresholding"
+[image6]: ./output_images/Perspective_Transformation.jpg "Perspective transformation"
+[video1]: ./project_video.mp4 "Video"
+
+---
+Table of Contents
+=================
+   1. [Submitted files](##Submitted files)
+   1. [The goals / steps of this project](##The goals / steps of this project)
+   1. [Camera Calibration](##Camera Calibration)
+   1. [Pipeline (single image)](##Pipeline (single image))
+   1. [Pipeline (video)](##Pipeline (video))
 
 ---
 
-**Advanced Lane Finding Project**
+## Submitted files
 
-The goals / steps of this project are the following:
+  * [writeup](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines-writeup.md) you are reading it
+  * [Code](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines.ipynb)
+  * [Example output image]()
+  * [Example output videos](https://www.youtube.com/watch?v=BPpeH9Xzc-0) and [challenge video](https://www.youtube.com/watch?v=kJhs2Iq-Q6o)
+  
+## The goals / steps of this project
 
 * Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
 * Apply a distortion correction to raw images.
@@ -17,43 +42,54 @@ The goals / steps of this project are the following:
 * Warp the detected lane boundaries back onto the original image.
 * Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
 
-[//]: # (Image References)
+## Camera Calibration
 
-[image1]: ./examples/undistort_output.png "Undistorted"
-[image2]: ./test_images/test1.jpg "Road Transformed"
-[image3]: ./examples/binary_combo_example.jpg "Binary Example"
-[image4]: ./examples/warped_straight_lines.jpg "Warp Example"
-[image5]: ./examples/color_fit_lines.jpg "Fit Visual"
-[image6]: ./examples/example_output.jpg "Output"
-[video1]: ./project_video.mp4 "Video"
+Due to imperfection in camera design and production, taken images are usually distorted. The cause of this may come from the lens monted on the camera or asembling errors. To do object recognition we need such images, that reflect reletively exact the real world, in meaning of space and dimension, therefore as first step of this project I will look for necessary parameters to correct distorted image, before processing further. The parameters are a camera matrix and distortion coefficients. The algorithm to find these two parameters are shown below
 
-## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
+<pre><code>
+    1. Find object points and image points 
+      1.1 Iterate through all calibration images, provided by Udacity
+      1.2 For each image calculate apply cv2.findChessboardCorners to find its object points (corners) and image points
+      1.3 register these object and image points for the next step
+    2. Apply cv2.calibrateCamera for the found object points and image points to calculate image matrix and distortion coefficients.
+    3. Apply the `cv2.undistort()` function to correct the distortion on the image
+ </code></pre>
 
-### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
-
----
-
-### Writeup / README
-
-#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  [Here](https://github.com/udacity/CarND-Advanced-Lane-Lines/blob/master/writeup_template.md) is a template writeup for this project you can use as a guide and a starting point.  
-
-You're reading it!
-
-### Camera Calibration
-
-#### 1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
-
-The code for this step is contained in the first code cell of the IPython notebook located in "./examples/example.ipynb" (or in lines # through # of the file called `some_file.py`).  
-
-I start by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here I am assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.  Thus, `objp` is just a replicated array of coordinates, and `objpoints` will be appended with a copy of it every time I successfully detect all chessboard corners in a test image.  `imgpoints` will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.  
-
-I then used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to the test image using the `cv2.undistort()` function and obtained this result: 
-
+This algorithm is implemeted in the function *camera_calibration* in the [jupyter notebook source](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines.ipynb). In the following picture, found chessboard corners on an image are shown
 ![alt text][image1]
+## Distortion correction
+After the image matrix and distortion coefficients are calculated, the distortion will be corrected by applying the "undistort_img" function. A distortion corrected data is shown below
+![alt text][image2]
 
-### Pipeline (single images)
+## Color and gradient thresholding
 
-#### 1. Provide an example of a distortion-corrected image.
+Color and gradient thresholding (see function "color_Gradient_Threshold" in [code](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines.ipynb))
+  * Color filtering (see function "MaskYellowAndWhite" in [here](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines.ipynb))
+     + Select yellow pixels in RGB color space
+     + Select white pixels in RGB color space
+     + Select yellow pixels in HLS color space
+  * Gradient thresholding: direction gradient is applied to find out edges in the original image
+  * Combine color and gradient to select expected pixels from the image
+      ![alt text][image3]
+      ![alt text][image4]
+      ![alt text][image5]
+      ![alt text][image6]
+
+## Perspective transformation
+In this step the thresholded image from previous step will be transformed in bird-eye perspective. Images in this perspective reflect  shapes of objects in real world, with it lanelines parameter such as curvatures will be easy determined. A perspective transformation is performed in following steps:
+   * Determine transformation matrix
+      + Determine source points on the original image and destination points on road surface.
+      + Call function cv2.getPerspectiveTransform to get the transformation matrix
+   * Perform perspective transformation on the original image with the "perspective_img_warp" function  
+
+## Pipeline (single images)
+
+   1. Distortion correction
+      ![alt text][image6]
+   2. Perform color and gradient thresholding on the original image
+   3. Perform perspective transformation on the original image
+      ![alt text][image7]
+   4. Finding laneline in the transformed image
 
 To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
 ![alt text][image2]
@@ -112,7 +148,7 @@ I implemented this step in lines # through # in my code in `yet_another_file.py`
 
 ---
 
-### Pipeline (video)
+## Pipeline (video)
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
