@@ -417,7 +417,7 @@ def write_Curvature_Offset_On_Image(img, left_curverad, right_curverad, offset):
     img = add_Text_2_img(img, 'Offset: ' + "{:.2f}".format(offset) +' cm',(10,65))
     return img
 
-def Pineline_video(img, M, Minv, mtx, dist, Is_1st_Frame = True, 
+def Pipeline_video(img, M, Minv, mtx, dist, Is_1st_Frame = True, 
                    left_fit = [], 
                    right_fit = [],
                    last_left_curverad = 0.0,
@@ -460,7 +460,7 @@ def Pineline_video(img, M, Minv, mtx, dist, Is_1st_Frame = True,
        
     return left_fit_new,right_fit_new, result_frame, Detected, new_left_curverad, new_right_curverad, new_offset
 
-def Pineline_image(img, M, mtx, dist, Minv):
+def Pipeline_image(img, M, mtx, dist, Minv):
     # Distortion correction of the input image
     undistorted_img = undistort_img(img, mtx, dist)
     Plot_Images([img, undistorted_img] , 2,title = 'Original <--> Undistorted')

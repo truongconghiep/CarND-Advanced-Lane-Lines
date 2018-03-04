@@ -18,7 +18,7 @@ thresholded_img = color_Gradient_Threshold(img, plot_allowed = True)
 # Perspective transformation
 M, Minv = Perspective_Transformation(undistorted_img, plot_allowed = False)
 # Pipeline for images
-img_p = Pineline_image(img, M, mtx, dist, Minv)
+img_p = Pipeline_image(img, M, mtx, dist, Minv)
 Plot_Images([img_p],1, title = 'Detected lane')
 # Pipeline for videos
 left_fit = []
@@ -31,7 +31,7 @@ frame_number = 0
 
 def process_image(image):
     global frame_number, left_fit, right_fit, last_left_curverad, last_right_curverad, last_offset, Is_1st_Frame
-    left_fit, right_fit, img, Detected, new_left_curverad, new_right_curverad, new_offset = Pineline_video(image, M, Minv,mtx, dist, 
+    left_fit, right_fit, img, Detected, new_left_curverad, new_right_curverad, new_offset = Pipeline_video(image, M, Minv,mtx, dist, 
                                                        Is_1st_Frame = Is_1st_Frame,
                                                        left_fit = left_fit,
                                                        right_fit = right_fit,
