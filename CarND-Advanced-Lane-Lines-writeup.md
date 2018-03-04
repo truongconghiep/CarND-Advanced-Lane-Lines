@@ -16,7 +16,7 @@
 Table of Contents
 =================
    1. [Submitted files](##Submitted files)
-   1. [The goals / steps of this project are the following](##The goals / steps of this project)
+   1. [The goals / steps of this project](##The goals / steps of this project)
    1. [Camera Calibration](##Camera Calibration)
    1. [Pipeline (single image)](##Pipeline (single image))
    1. [Pipeline (video)](##Pipeline (video))
