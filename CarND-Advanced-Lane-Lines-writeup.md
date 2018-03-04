@@ -90,12 +90,12 @@ In this step the thresholded image from previous step will be transformed in bir
       + Determine source points on the original image and destination points on road surface.
       + Call function cv2.getPerspectiveTransform to get the transformation matrix. This function takes some point of source image and some of destination image as input. These points are chosen as below
            <pre><code> 
-           | Source (y,x)  | Destination(y,x)| 
-           |:-------------:|:---------------:| 
-           | 273, 672      | 273, 720        | 
+           | Source (y,x)  | Destination(y,x)|
+           |:-------------:|:---------------:|
+           | 273, 672      | 273, 720        |
            | 570, 466      | 273, 0          |
            | 712, 466      | 1030,0          |
-           | 1030, 672     | 1030, 720       | </cpde></pre>
+           | 1030, 672     | 1030, 720       |</cpde></pre>
    * Perform perspective transformation on the original image with the ["perspective_img_warp"](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L79) function 
 An example of perspective transformation is shown in the figure below
 ![alt text][image7]
