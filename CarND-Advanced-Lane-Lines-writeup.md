@@ -95,20 +95,19 @@ An example of perspective transformation is shown in the figure below
 
 ## Pipeline (single images) ([code here](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L463))
 
-   * Distortion correction
+   1. Distortion correction
       ![alt text][image8]
-      
    2. Perform color and gradient thresholding on the original image
-   ![alt text][image9]
+      ![alt text][image9]
    3. Perform perspective transformation on the original image
       ![alt text][image10]
    4. [Finding laneline in the transformed image](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L197)
    5. Visualization 
-      * Searching window technique
+      * [Searching window technique](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L331)
          ![alt text][image11]
-      * Margin visualization
+      * [Margin visualization](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L353)
          ![alt text][image12]
-   6. Draw detected lane in road surface space
+   6. [Draw detected lane in road surface space](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L392)
    7. Transforn drawnd lane back to camera perspective space
    8. Combine drawn lane image to the original image
       ![alt text][image13]
