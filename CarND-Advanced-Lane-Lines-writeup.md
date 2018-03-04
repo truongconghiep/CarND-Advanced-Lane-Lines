@@ -1,9 +1,22 @@
-## Advanced land finding project
+# Advanced land finding project
 
 **Hiep Truong Cong**
 
 ---
-
+Table of Contents
+=================
+   1. [Camera calibration](#advanced-lane-lines)
+      * [Pipeline](#pipeline)
+      * [Pipeline Images](#pipeline-images)
+   1. [Files](#files)
+      * [Usage](#usage)
+   1. [Challenges](#challenges)
+      * [Lack of Intuition](#lack-of-intuition)
+      * [Building Intuition with Visual Augmentation](#building-intuition-with-visual-augmentation)
+      * [Road Textures](#road-textures)
+   1. [Shortcomings &amp; Future Enhancements](#shortcomings--future-enhancements)
+      * [Enhancements for future](#enhancements-for-future)
+   1. [Acknowledgements &amp; References](#acknowledgements--references)
 
 The goals / steps of this project are the following:
 
@@ -32,15 +45,25 @@ The goals / steps of this project are the following:
 
 ---
 
-### Writeup / README
+## Submitte files
 
-#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  [Here](https://github.com/udacity/CarND-Advanced-Lane-Lines/blob/master/writeup_template.md) is a template writeup for this project you can use as a guide and a starting point.  
+[writeup](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines-writeup.md) you are reading it
+[Code](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines.ipynb)
+[Example output image]()
+[Example output videos](https://www.youtube.com/watch?v=BPpeH9Xzc-0) and [challenge video](https://www.youtube.com/watch?v=kJhs2Iq-Q6o)
 
-You're reading it!
+## Camera Calibration
 
-### Camera Calibration
+Due to imperfection in camera design and production, taken images are usually distorted. The cause of this may come from the lens monted on the camera or asembling errors. To do object recognition we need such images, that reflect reletively exact the real world, in meaning of space and dimension, therefore as first step of this project I will look for necessary parameters to correct distorted image, before processing further. The parameters are a camera matrix and distortion coefficients. The algorithm to find these two parameters are shown below
 
-#### 1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
+    1. Find object points and image points 
+    1.1 Iterate through all calibration images, provided by Udacity
+    1.1 For each image calculate apply cv2.findChessboardCorners to find its object points and image points (corners)
+    2. Apply cv2.calibrateCamera for the found object points and image points to calculate image matrix and distortion coefficients.
+ 
+
+
+
 
 The code for this step is contained in the first code cell of the IPython notebook located in "./examples/example.ipynb" (or in lines # through # of the file called `some_file.py`).  
 
@@ -50,7 +73,7 @@ I then used the output `objpoints` and `imgpoints` to compute the camera calibra
 
 ![alt text][image1]
 
-### Pipeline (single images)
+## Pipeline (single images)
 
 #### 1. Provide an example of a distortion-corrected image.
 
@@ -111,7 +134,7 @@ I implemented this step in lines # through # in my code in `yet_another_file.py`
 
 ---
 
-### Pipeline (video)
+## Pipeline (video)
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
