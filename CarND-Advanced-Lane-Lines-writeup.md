@@ -44,16 +44,12 @@
 ## Camera Calibration
 
 Due to imperfection in camera design and production, taken images are usually distorted. The cause of this may come from the lens monted on the camera or asembling errors. To do object recognition we need such images, that reflect reletively exact the real world, in meaning of space and dimension, therefore as first step of this project I will look for necessary parameters to correct distorted image, before processing further. The parameters are a camera matrix and distortion coefficients. The algorithm to find these two parameters are shown below
-
-<pre><code>
-    1. Find object points and image points 
-      1.1 Iterate through all calibration images, provided by Udacity
-      1.2 For each image calculate apply cv2.findChessboardCorners to find its object points (corners) and image points
-      1.3 register these object and image points for the next step
-    2. Apply cv2.calibrateCamera for the found object points and image points to calculate image matrix and distortion coefficients.
-    3. Apply the `cv2.undistort()` function to correct the distortion on the image
- </code></pre>
-
+  * Find object points and image points 
+    + Iterate through all calibration images, provided by Udacity
+    + For each image calculate apply cv2.findChessboardCorners to find its object points (corners) and image points
+    +  register these object and image points for the next step
+  * Apply cv2.calibrateCamera for the found object points and image points to calculate image matrix and distortion coefficients.
+  * Apply the `cv2.undistort()` function to correct the distortion on the image
 This algorithm is implemeted in the function [*camera_calibration*](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L58). In the following picture, found chessboard corners on an image are shown
 ![alt text][image1]
 
