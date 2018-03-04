@@ -15,23 +15,22 @@
 ---
 Table of Contents
 =================
-   1. [Submitted files](## Submitted files)
-   1. [The goals / steps of this project are the following](## The goals / steps of this project are the following)
-   1. [Camera Calibration](## Camera Calibration)
-   1. [Pipeline (single image)](## Pipeline (single image))
-      * [Enhancements for future](#enhancements-for-future)
-   1. [Pipeline (video)](## Pipeline (video))
+   1. [Submitted files](##Submitted files)
+   1. [The goals / steps of this project are the following](##The goals / steps of this project)
+   1. [Camera Calibration](##Camera Calibration)
+   1. [Pipeline (single image)](##Pipeline (single image))
+   1. [Pipeline (video)](##Pipeline (video))
 
 ---
 
-## Submitte files
+## Submitted files
 
   * [writeup](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines-writeup.md) you are reading it
   * [Code](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines.ipynb)
   * [Example output image]()
   * [Example output videos](https://www.youtube.com/watch?v=BPpeH9Xzc-0) and [challenge video](https://www.youtube.com/watch?v=kJhs2Iq-Q6o)
   
-## The goals / steps of this project are the following:
+## The goals / steps of this project
 
 * Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
 * Apply a distortion correction to raw images.
