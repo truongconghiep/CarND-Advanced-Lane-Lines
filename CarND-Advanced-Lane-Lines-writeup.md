@@ -103,9 +103,9 @@ An example of perspective transformation is shown in the figure below
       ![alt text][image10]
    4. [Finding laneline in the transformed image](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L197)
    5. Visualization 
-      [Searching window technique](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L331)
+      + Searching window technique [see](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L331)
+      + [Margin visualization](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L353)
          ![alt text][image11]
-      [Margin visualization](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L353)
          ![alt text][image12]
    6. [Draw detected lane in road surface space](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L392)
    7. Transforn drawnd lane back to camera perspective space
