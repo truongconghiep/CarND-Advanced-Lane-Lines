@@ -10,7 +10,7 @@
 [image5]: ./output_images/Direction_Gradient_Thresholding.jpg "Direction gradient"
 [image6]: ./output_images/Combined_Thresholding.jpg "Combined thresholding"
 [image7]: ./output_images/Perspective_Transformation.jpg "Perspective transformation"
-[image8]: ./output_images/PL_Img_Distortion_Correction.jpg "Distortion Correction in pipeline
+[image8]: ./output_images/PL_Img_Distortion_Correction.jpg "Distortion Correction in pipeline"
 [image9]: ./output_images/PL_Thresholding.jpg "Thresholding in pipeline"
 [image10]: ./output_images/PL_Perspective_Transform.jpg "Perspective transformation in pipeline"
 [image11]: ./output_images/PL_searching_window.jpg "Searching window technique"
@@ -97,6 +97,7 @@ An example of perspective transformation is shown in the figure below
 
    * Distortion correction
       ![alt text][image8]
+      
    2. Perform color and gradient thresholding on the original image
    ![alt text][image9]
    3. Perform perspective transformation on the original image
