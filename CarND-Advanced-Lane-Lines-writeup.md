@@ -24,11 +24,11 @@
 ---
 Table of Contents
 =================
-   1. [Submitted files](##Submitted files)
-   1. [The goals / steps of this project](##The goals / steps of this project)
-   1. [Camera Calibration](##Camera Calibration)
-   1. [Pipeline (single image)](##Pipeline (single image))
-   1. [Pipeline (video)](##Pipeline (video))
+[Submitted files](## Submitted files)
+[The goals / steps of this project](## The goals / steps of this project)
+[Camera Calibration](## Camera Calibration)
+[Pipeline (single image)](## Pipeline (single image))
+[Pipeline (video)](## Pipeline (video))
 
 ---
 
@@ -110,7 +110,8 @@ An example of perspective transformation is shown in the figure below
    3. Perform perspective transformation on the original image
       ![alt text][image10]
    4. [Finding laneline in the transformed image](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L197)
-      
+      In this step pixels of the lanelines are determined in this [piece of code](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L234-#L26)
+      Line curvatures and the car position from the image center are also determined [here](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L282)
    5. Visualization 
       + Searching window technique [see](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L331)
       + [Margin visualization](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L353)
@@ -123,27 +124,6 @@ An example of perspective transformation is shown in the figure below
       ![alt text][image13]
 
 ```
-
-
-
-
-#### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
-
-Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
-
-![alt text][image5]
-
-#### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
-
-I did this in lines # through # in my code in `my_other_file.py`
-
-#### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
-
-I implemented this step in lines # through # in my code in `yet_another_file.py` in the function `map_lane()`.  Here is an example of my result on a test image:
-
-![alt text][image6]
-
----
 
 ## Pipeline (video)
 
