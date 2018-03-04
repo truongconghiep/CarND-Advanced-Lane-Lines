@@ -3,7 +3,6 @@
 **Hiep Truong Cong**
 
 [//]: # (Image References)
-
 [image1]: ./output_images/Chessboard_corner.png "Chessboard corners"
 [image2]: ./output_images/Distortion_Correction.jpg "Distortion Correction"
 [image3]: ./output_images/WhiteAndYellowMasking.jpg "White and yellow masking"
@@ -96,10 +95,10 @@ An example of perspective transformation is shown in the figure below
 
 ## Pipeline (single images) ([code here](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L463))
 
-   1. Distortion correction
+   * Distortion correction
       ![alt text][image8]
    2. Perform color and gradient thresholding on the original image
-      ![alt text][image9]
+   ![alt text][image9]
    3. Perform perspective transformation on the original image
       ![alt text][image10]
    4. [Finding laneline in the transformed image](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L197)
