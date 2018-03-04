@@ -15,18 +15,12 @@
 ---
 Table of Contents
 =================
-   1. [Camera calibration](#advanced-lane-lines)
-      * [Pipeline](#pipeline)
-      * [Pipeline Images](#pipeline-images)
-   1. [Files](#files)
-      * [Usage](#usage)
-   1. [Challenges](#challenges)
-      * [Lack of Intuition](#lack-of-intuition)
-      * [Building Intuition with Visual Augmentation](#building-intuition-with-visual-augmentation)
-      * [Road Textures](#road-textures)
-   1. [Shortcomings &amp; Future Enhancements](#shortcomings--future-enhancements)
+   1. [Submitted files](## Submitted files)
+   1. [The goals / steps of this project are the following](## The goals / steps of this project are the following)
+   1. [Camera Calibration](## Camera Calibration)
+   1. [Pipeline (single image)](## Pipeline (single image))
       * [Enhancements for future](#enhancements-for-future)
-   1. [Acknowledgements &amp; References](#acknowledgements--references)
+   1. [Pipeline (video)](## Pipeline (video))
 
 ---
 
@@ -52,22 +46,18 @@ Table of Contents
 
 Due to imperfection in camera design and production, taken images are usually distorted. The cause of this may come from the lens monted on the camera or asembling errors. To do object recognition we need such images, that reflect reletively exact the real world, in meaning of space and dimension, therefore as first step of this project I will look for necessary parameters to correct distorted image, before processing further. The parameters are a camera matrix and distortion coefficients. The algorithm to find these two parameters are shown below
 
+<pre><code>
     1. Find object points and image points 
-    1.1 Iterate through all calibration images, provided by Udacity
-    1.1 For each image calculate apply cv2.findChessboardCorners to find its object points and image points (corners)
+      1.1 Iterate through all calibration images, provided by Udacity
+      1.2 For each image calculate apply cv2.findChessboardCorners to find its object points (corners) and image points
+      1.3 register these object and image points for the next step
     2. Apply cv2.calibrateCamera for the found object points and image points to calculate image matrix and distortion coefficients.
- 
+    3. Apply the `cv2.undistort()` function to correct the distortion on the image
+ </code></pre>
 
+This algorithm is implemeted in the function *camera_calibration* in the [jupyter notebook source](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines.ipynb). In the following picture, found chessboard corners on an image are shown
+!![alt text][image1]
 
-
-
-The code for this step is contained in the first code cell of the IPython notebook located in "./examples/example.ipynb" (or in lines # through # of the file called `some_file.py`).  
-
-I start by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here I am assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.  Thus, `objp` is just a replicated array of coordinates, and `objpoints` will be appended with a copy of it every time I successfully detect all chessboard corners in a test image.  `imgpoints` will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.  
-
-I then used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to the test image using the `cv2.undistort()` function and obtained this result: 
-
-![alt text][image1]
 
 ## Pipeline (single images)
 
