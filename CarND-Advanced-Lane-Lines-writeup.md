@@ -89,13 +89,14 @@ In this step the thresholded image from previous step will be transformed in bir
    * Determine transformation matrix
       + Determine source points on the original image and destination points on road surface.
       + Call function cv2.getPerspectiveTransform to get the transformation matrix. This function takes some point of source image and some of destination image as input. These points are chosen as below
-           <pre><code> 
+
            | Source (y,x)  | Destination(y,x)|
            |:-------------:|:---------------:|
            | 273, 672      | 273, 720        |
            | 570, 466      | 273, 0          |
            | 712, 466      | 1030,0          |
-           | 1030, 672     | 1030, 720       |</cpde></pre>
+           | 1030, 672     | 1030, 720       |
+           
    * Perform perspective transformation on the original image with the ["perspective_img_warp"](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L79) function 
 An example of perspective transformation is shown in the figure below
 ![alt text][image7]
@@ -109,6 +110,7 @@ An example of perspective transformation is shown in the figure below
    3. Perform perspective transformation on the original image
       ![alt text][image10]
    4. [Finding laneline in the transformed image](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L197)
+      
    5. Visualization 
       + Searching window technique [see](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L331)
       + [Margin visualization](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L353)
@@ -120,32 +122,10 @@ An example of perspective transformation is shown in the figure below
    
       ![alt text][image13]
 
-To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
-![alt text][image2]
-
-
-#### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
-
-The code for my perspective transform includes a function called `warper()`, which appears in lines 1 through 8 in the file `example.py` (output_images/examples/example.py) (or, for example, in the 3rd code cell of the IPython notebook).  The `warper()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
-
-```python
-src = np.float32(
-    [[(img_size[0] / 2) - 55, img_size[1] / 2 + 100],
-    [((img_size[0] / 6) - 10), img_size[1]],
-    [(img_size[0] * 5 / 6) + 60, img_size[1]],
-    [(img_size[0] / 2 + 55), img_size[1] / 2 + 100]])
-dst = np.float32(
-    [[(img_size[0] / 4), 0],
-    [(img_size[0] / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), 0]])
 ```
 
 
 
-I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
-
-![alt text][image4]
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
