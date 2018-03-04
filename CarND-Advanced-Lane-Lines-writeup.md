@@ -1,10 +1,9 @@
-## Writeup Template
+## Advanced land finding project
 
-### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
+**Hiep Truong Cong**
 
 ---
 
-**Advanced Lane Finding Project**
 
 The goals / steps of this project are the following:
 
