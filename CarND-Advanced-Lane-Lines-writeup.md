@@ -4,13 +4,13 @@
 
 [//]: # (Image References)
 
-[image1]: ./output_images/undistort_output.png "Undistorted"
+[image1]: ./output_images/Chessboard_corner.png "Chessboard corners"
 [image2]: ./output_images/Distortion_Correction.jpg "Distortion Correction"
-[image2]: ./output_images/WhiteAndYellowMasking.jpg "White and yellow masking"
-[image3]: ./output_images/binary_thresholding.jpg "Binary thresholding"
-[image4]: ./output_images/Direction_Gradient_Thresholding.jpg "Direction gradient"
-[image5]: ./output_images/Combined_Thresholding.jpg "Combined thresholding"
-[image6]: ./output_images/Perspective_Transformation.jpg "Perspective transformation"
+[image3]: ./output_images/WhiteAndYellowMasking.jpg "White and yellow masking"
+[image4]: ./output_images/binary_thresholding.jpg "Binary thresholding"
+[image5]: ./output_images/Direction_Gradient_Thresholding.jpg "Direction gradient"
+[image6]: ./output_images/Combined_Thresholding.jpg "Combined thresholding"
+[image7]: ./output_images/Perspective_Transformation.jpg "Perspective transformation"
 [video1]: ./project_video.mp4 "Video"
 
 ---
@@ -27,7 +27,7 @@ Table of Contents
 ## Submitted files
 
   * [writeup](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines-writeup.md) you are reading it
-  * [Code](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines.ipynb)
+  * [Jupyter Notebook](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines.ipynb) and [python source](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py)
   * [Example output image]()
   * [Example output videos](https://www.youtube.com/watch?v=BPpeH9Xzc-0) and [challenge video](https://www.youtube.com/watch?v=kJhs2Iq-Q6o)
   
@@ -55,8 +55,9 @@ Due to imperfection in camera design and production, taken images are usually di
     3. Apply the `cv2.undistort()` function to correct the distortion on the image
  </code></pre>
 
-This algorithm is implemeted in the function *camera_calibration* in the [jupyter notebook source](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines.ipynb). In the following picture, found chessboard corners on an image are shown
+This algorithm is implemeted in the function [*camera_calibration*](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L58). In the following picture, found chessboard corners on an image are shown
 ![alt text][image1]
+
 ## Distortion correction
 After the image matrix and distortion coefficients are calculated, the distortion will be corrected by applying the "undistort_img" function. A distortion corrected data is shown below
 ![alt text][image2]
