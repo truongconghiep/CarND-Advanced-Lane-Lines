@@ -27,7 +27,7 @@
 
   * [writeup](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines-writeup.md) you are reading it
   * [Jupyter Notebook](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines.ipynb) and [python source](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py)
-  * [Example output image]()
+  * [Example output image](./output_images/PL_final_image.jpg)
   * [Example output videos](https://www.youtube.com/watch?v=BPpeH9Xzc-0) and [challenge video](https://www.youtube.com/watch?v=kJhs2Iq-Q6o)
   
 ## The goals / steps of this project
@@ -101,8 +101,8 @@ An example of perspective transformation is shown in the figure below
    3. Perform perspective transformation on the original image
       ![alt text][image10]
    4. [Finding laneline in the transformed image](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L197)
-      In this step pixels of the lanelines are determined in this [piece of code](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L234-#L26)
-      Line curvatures and the car position from the image center are also determined [here](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L282)
+      + In this step pixels of the lanelines are determined in this [piece of code](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L234-#L26)
+      + Line curvatures and the car position from the image center are also determined [here](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L282)
    5. Visualization 
       + Searching window technique [see](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L331)
       + [Margin visualization](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L353)
@@ -114,15 +114,20 @@ An example of perspective transformation is shown in the figure below
    
       ![alt text][image13]
 
-```
+## Pipeline (video) ([code here](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L420))
 
-## Pipeline (video)
+Here's a [link to my video result](https://www.youtube.com/watch?v=BPpeH9Xzc-0) or [here](./output_videos/project_video.mp4)
 
-#### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
-
-Here's a [link to my video result](./project_video.mp4)
-
----
+ 1. Distortion correction
+ 2. Perform color and gradient thresholding on the original image
+ 3. Perform perspective transformation on the original image
+ 4. Finding laneline in the transformed image. Using *find_lines_in_1st_frame* for the first frame or whenever fail to detect lanelines in a frame and *find_lines* for other frame
+ 5. Draw detected lane in road surface space
+ 6. Transforn drawnd lane back to camera perspective space
+ 7. Add information of curvatures and offset to the frame
+ 
+My laneline detector also works for the *challenge_video*. Here 's a link to the [challenge video](https://www.youtube.com/watch?v=kJhs2Iq-Q6o) or [here](./output_videos/challenge_video.mp4)
+ 
 
 ### Discussion
 
