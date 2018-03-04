@@ -11,6 +11,15 @@
 [image5]: ./output_images/Direction_Gradient_Thresholding.jpg "Direction gradient"
 [image6]: ./output_images/Combined_Thresholding.jpg "Combined thresholding"
 [image7]: ./output_images/Perspective_Transformation.jpg "Perspective transformation"
+[image8]: ./output_images/PL_Img_Distortion_Correction.jpg "Distortion Correction in pipeline
+[image9]: ./output_images/PL_Thresholding.jpg "Thresholding in pipeline"
+[image10]: ./output_images/PL_Perspective_Transform.jpg "Perspective transformation in pipeline"
+[image11]: ./output_images/PL_searching_window.jpg "Searching window technique"
+[image12]: ./output_images/PL_Margin_Visualization.jpg "Margin visualization"
+[image13]: ./output_images/PL_final_image.jpg "Final image"
+[image7]: ./output_images/
+[image7]: ./output_images/
+
 [video1]: ./project_video.mp4 "Video"
 
 ---
@@ -82,15 +91,27 @@ In this step the thresholded image from previous step will be transformed in bir
       + Determine source points on the original image and destination points on road surface.
       + Call function cv2.getPerspectiveTransform to get the transformation matrix
    * Perform perspective transformation on the original image with the ["perspective_img_warp"](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L79) function  
+An example of perspective transformation is shown in the figure below
+![alt text][image7]
 
-## Pipeline (single images)
+## Pipeline (single images) ([code here](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L463))
 
    1. Distortion correction
-      ![alt text][image6]
+      ![alt text][image8]
    2. Perform color and gradient thresholding on the original image
+      ![alt text][image9]
    3. Perform perspective transformation on the original image
-      ![alt text][image7]
-   4. Finding laneline in the transformed image
+      ![alt text][image10]
+   4. [Finding laneline in the transformed image](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L197)
+   5. Visualization 
+      * Searching window technique
+         ![alt text][image11]
+      * Margin visualization
+         ![alt text][image12]
+   6. Draw detected lane in road surface space
+   7. Transforn drawnd lane back to camera perspective space
+   8. Combine drawn lane image to the original image
+      ![alt text][image13]
 
 To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
 ![alt text][image2]
