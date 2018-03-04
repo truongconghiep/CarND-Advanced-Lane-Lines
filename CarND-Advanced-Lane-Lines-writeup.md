@@ -131,6 +131,4 @@ My laneline detector also works for the *challenge_video*. Here 's a link to the
 
 ### Discussion
 
-#### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
-
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+One of the difficulties in this project is to select correct pixels, which are representing lanelines. Due to change of light conditions, color fading of linelines it is very difficult to filter out exactly the pixels of interess. Many techniques are available to detect laneline, for example color thresholding and gradient thresholding, but every of them works in only some certain conditions. To build a realiable detector I have to combine these techniques together than tune there parameters, so that lanelines can be detected robustly. My detector works well on the project video and still has some flaws on the challenge video. In the future, a low-pass filter can be built in the detector to make it more stable to the change of light condition, also on roads in rough terrances. 
