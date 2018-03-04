@@ -59,13 +59,13 @@ This algorithm is implemeted in the function [*camera_calibration*](https://gith
 ![alt text][image1]
 
 ## Distortion correction
-After the image matrix and distortion coefficients are calculated, the distortion will be corrected by applying the "undistort_img" function. A distortion corrected data is shown below
+After the image matrix and distortion coefficients are calculated, the distortion will be corrected by applying the ["undistort_img"](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L76) function. A distortion corrected data is shown below
 ![alt text][image2]
 
 ## Color and gradient thresholding
 
-Color and gradient thresholding (see function "color_Gradient_Threshold" in [code](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines.ipynb))
-  * Color filtering (see function "MaskYellowAndWhite" in [here](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines.ipynb))
+Color and gradient thresholding (see function ["color_Gradient_Threshold"](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L146))
+  * Color filtering (see function ["MaskYellowAndWhite"](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L112))
      + Select yellow pixels in RGB color space
      + Select white pixels in RGB color space
      + Select yellow pixels in HLS color space
@@ -81,7 +81,7 @@ In this step the thresholded image from previous step will be transformed in bir
    * Determine transformation matrix
       + Determine source points on the original image and destination points on road surface.
       + Call function cv2.getPerspectiveTransform to get the transformation matrix
-   * Perform perspective transformation on the original image with the "perspective_img_warp" function  
+   * Perform perspective transformation on the original image with the ["perspective_img_warp"](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L79) function  
 
 ## Pipeline (single images)
 
