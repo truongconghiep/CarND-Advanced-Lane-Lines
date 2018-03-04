@@ -97,9 +97,6 @@ In this step the thresholded image from previous step will be transformed in bir
            | 712, 466      | 1030,0          |
            | 1030, 672     | 1030, 720       | </cpde></pre>
    * Perform perspective transformation on the original image with the ["perspective_img_warp"](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L79) function 
-   
-
-
 An example of perspective transformation is shown in the figure below
 ![alt text][image7]
 
