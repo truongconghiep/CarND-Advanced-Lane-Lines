@@ -5,11 +5,12 @@
 [//]: # (Image References)
 
 [image1]: ./output_images/undistort_output.png "Undistorted"
+[image2]: ./output_images/Distortion_Correction.jpg "Distortion Correction"
 [image2]: ./output_images/WhiteAndYellowMasking.jpg "White and yellow masking"
 [image3]: ./output_images/binary_thresholding.jpg "Binary thresholding"
 [image4]: ./output_images/Direction_Gradient_Thresholding.jpg "Direction gradient"
 [image5]: ./output_images/Combined_Thresholding.jpg "Combined thresholding"
-[image6]: ./output_images/example_output.jpg "Output"
+[image6]: ./output_images/Perspective_Transformation.jpg "Perspective transformation"
 [video1]: ./project_video.mp4 "Video"
 
 ---
@@ -56,22 +57,39 @@ Due to imperfection in camera design and production, taken images are usually di
 
 This algorithm is implemeted in the function *camera_calibration* in the [jupyter notebook source](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines.ipynb). In the following picture, found chessboard corners on an image are shown
 ![alt text][image1]
+## Distortion correction
+After the image matrix and distortion coefficients are calculated, the distortion will be corrected by applying the "undistort_img" function. A distortion corrected data is shown below
+![alt text][image2]
 
+## Color and gradient thresholding
 
-## Pipeline (single images)
-
-   1. Distortion connection
-   2. Color and gradient thresholding (see function "color_Gradient_Threshold" in [code](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines.ipynb))
-      * Color filtering (see function "MaskYellowAndWhite" in [here](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines.ipynb))
-         + Select yellow pixels in RGB color space
-         + Select white pixels in RGB color space
-         + Select yellow pixels in HLS color space
-      * Gradient thresholding: direction gradient is applied to find out edges in the original image
-      * Combine color and gradient to select expected pixels from the image
-      ![alt text][image2]
+Color and gradient thresholding (see function "color_Gradient_Threshold" in [code](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines.ipynb))
+  * Color filtering (see function "MaskYellowAndWhite" in [here](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND-Advanced-Lane-Lines.ipynb))
+     + Select yellow pixels in RGB color space
+     + Select white pixels in RGB color space
+     + Select yellow pixels in HLS color space
+  * Gradient thresholding: direction gradient is applied to find out edges in the original image
+  * Combine color and gradient to select expected pixels from the image
       ![alt text][image3]
       ![alt text][image4]
       ![alt text][image5]
+      ![alt text][image6]
+
+## Perspective transformation
+In this step the thresholded image from previous step will be transformed in bird-eye perspective. Images in this perspective reflect  shapes of objects in real world, with it lanelines parameter such as curvatures will be easy determined. A perspective transformation is performed in following steps:
+   * Determine transformation matrix
+      + Determine source points on the original image and destination points on road surface.
+      + Call function cv2.getPerspectiveTransform to get the transformation matrix
+   * Perform perspective transformation on the original image with the "perspective_img_warp" function  
+
+## Pipeline (single images)
+
+   1. Distortion correction
+      ![alt text][image6]
+   2. Perform color and gradient thresholding on the original image
+   3. Perform perspective transformation on the original image
+      ![alt text][image7]
+   4. Finding laneline in the transformed image
 
 To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
 ![alt text][image2]
