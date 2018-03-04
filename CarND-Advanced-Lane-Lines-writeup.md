@@ -22,15 +22,6 @@
 [video1]: ./project_video.mp4 "Video"
 
 ---
-Table of Contents
-=================
-[Submitted files](## Submitted files)
-[The goals / steps of this project](## The goals / steps of this project)
-[Camera Calibration](## Camera Calibration)
-[Pipeline (single image)](## Pipeline (single image))
-[Pipeline (video)](## Pipeline (video))
-
----
 
 ## Submitted files
 
