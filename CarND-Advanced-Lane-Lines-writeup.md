@@ -88,8 +88,18 @@ Color and gradient thresholding (see function ["color_Gradient_Threshold"](https
 In this step the thresholded image from previous step will be transformed in bird-eye perspective. Images in this perspective reflect  shapes of objects in real world, with it lanelines parameter such as curvatures will be easy determined. A perspective transformation is performed in following steps:
    * Determine transformation matrix
       + Determine source points on the original image and destination points on road surface.
-      + Call function cv2.getPerspectiveTransform to get the transformation matrix
-   * Perform perspective transformation on the original image with the ["perspective_img_warp"](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L79) function  
+      + Call function cv2.getPerspectiveTransform to get the transformation matrix. This function takes some point of source image and some of destination image as input. These points are chosen as below
+           <pre><code> 
+           | Source (y,x)  | Destination(y,x)| 
+           |:-------------:|:---------------:| 
+           | 273, 672      | 273, 720        | 
+           | 570, 466      | 273, 0          |
+           | 712, 466      | 1030,0          |
+           | 1030, 672     | 1030, 720       | </cpde></pre>
+   * Perform perspective transformation on the original image with the ["perspective_img_warp"](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L79) function 
+   
+
+
 An example of perspective transformation is shown in the figure below
 ![alt text][image7]
 
@@ -110,16 +120,12 @@ An example of perspective transformation is shown in the figure below
    6. [Draw detected lane in road surface space](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L392)
    7. Transforn drawnd lane back to camera perspective space
    8. Combine drawn lane image to the original image
+   
       ![alt text][image13]
 
 To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
 ![alt text][image2]
 
-#### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
-
-I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines # through # in `another_file.py`).  Here's an example of my output for this step.  (note: this is not actually from one of the test images)
-
-![alt text][image3]
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
@@ -138,14 +144,7 @@ dst = np.float32(
     [(img_size[0] * 3 / 4), 0]])
 ```
 
-This resulted in the following source and destination points:
 
-| Source        | Destination   | 
-|:-------------:|:-------------:| 
-| 585, 460      | 320, 0        | 
-| 203, 720      | 320, 720      |
-| 1127, 720     | 960, 720      |
-| 695, 460      | 960, 0        |
 
 I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
 
