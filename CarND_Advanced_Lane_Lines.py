@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import glob
 
-def Plot_Images(images, number_img_per_row, title = None, subtitle = []):
+def Plot_Images(images, number_img_per_row, title = None):
     """
         This function plot an arbitrary number of images
             input: 
@@ -138,9 +138,17 @@ def MaskYellowAndWhite(image):
     mask_hls_yellow = cv2.inRange(hls, lower_hls_yellow, upper_hls_yellow)
     hls_y = cv2.bitwise_and(image, image, mask = mask_hls_yellow).astype(np.uint8)
     hls_y = grayscale(hls_y)
+    # Mask white color in LUV color space
+    luv = cv2.cvtColor(image, cv2.COLOR_RGB2LUV).astype(np.float)
+    lower_luv_white = np.array([225,0,0], dtype = "uint8")
+    upper_luv_white = np.array([255,255,255], dtype = "uint8")
+    mask_luv_white = cv2.inRange(luv, lower_luv_white, upper_luv_white)
+    luvw = cv2.bitwise_and(image, image, mask = mask_luv_white).astype(np.uint8)
+    luvw = grayscale(luvw)
     # sum up the filtered images
     gray = cv2.add(rgb_y, rgb_w)
     gray = cv2.add(gray, hls_y)
+    gray = cv2.add(gray, luvw)
     return gray
 
 def color_Gradient_Threshold(img, ksize = 3, plot_allowed = False):
@@ -158,14 +166,13 @@ def color_Gradient_Threshold(img, ksize = 3, plot_allowed = False):
         Plot_Images([combined_threshold] , 2, title = 'Color and gradient thresholded image')
     return combined_threshold
 
-def calculate_curvature_offset(binary_warped, 
-                                leftx, 
-                                lefty, 
-                                rightx, 
-                                righty,
-                                last_left_curverad = None, 
-                                last_right_curverad = None,
-                                last_offset = None):
+def calculate_curvature(binary_warped, 
+                        leftx, 
+                        lefty, 
+                        rightx, 
+                        righty,
+                        last_left_curverad = 0.0, 
+                        last_right_curverad = 0.0):
     ym_per_pix = 30/720 # meters per pixel in y dimension
     xm_per_pix = 3.7/700 # meters per pixel in x dimension
     ploty = np.linspace(0, binary_warped.shape[0]-1, binary_warped.shape[0])
@@ -187,19 +194,21 @@ def calculate_curvature_offset(binary_warped,
     else:
         right_curverad = last_right_curverad
     
-    if (rightx.size != 0) and (leftx.size != 0):
-        offset = (rightx[-1] + leftx[-1] - binary_warped.shape[1]) / 2 * xm_per_pix * 100
-    else:
-        offset = last_offset
-    
-    return left_curverad, right_curverad, offset
+    return ((left_curverad + last_left_curverad)/2), ((right_curverad + last_right_curverad)/2)
+
+def Calculate_Offset(binary_warped, left_fit_new, right_fit_new):
+    xm_per_pix = 3.7/700
+    ploty = np.linspace(0, 719, num=720)# to cover same y-range as image
+    left_fitx = left_fit_new[0]*ploty[-1]**2 + left_fit_new[1]*ploty[-1] + left_fit_new[2]
+    right_fitx = right_fit_new[0]*ploty[-1]**2 + right_fit_new[1]*ploty[-1] + right_fit_new[2]
+    new_offset = (binary_warped.shape[1] - left_fitx - right_fitx)/2 * xm_per_pix * 100
+    return new_offset
 
 def find_lines_in_1st_frame(binary_warped, 
-                            last_left_fit = None, 
-                            last_right_fit = None, 
+                            left_fit_old = [0.0,0.0,0.0], 
+                            right_fit_old = [0.0,0.0,0.0], 
                             last_left_curverad = 0.0, 
-                            last_right_curverad = 0.0,
-                            last_offset = 0.0):
+                            last_right_curverad = 0.0):
     Detected = True
     # Take a histogram of the bottom half of the image
     histogram = np.sum(binary_warped[int(binary_warped.shape[0]/2):,:], axis=0)
@@ -268,28 +277,37 @@ def find_lines_in_1st_frame(binary_warped,
     
     # Fit a second order polynomial to each
     if (lefty.size != 0) and (leftx.size != 0):
-        left_fit_new = np.polyfit(lefty, leftx, 2)        
+        left_fit_new = np.polyfit(lefty, leftx, 2) 
+        if (left_fit_old[0] != 0.0) and (np.absolute(left_fit_new[0]) < 0.001):      
+            left_fit_new = [sum(x)/2 for x in zip(left_fit_new, left_fit_old)]
+        elif np.absolute(left_fit_new[0]) >= 0.001:
+            left_fit_new = left_fit_old
+            Detected = False
     else:        
-        left_fit_new = last_left_fit
+        left_fit_new = left_fit_old
         Detected = False
 
-    if righty.size != 0:    
+    if (righty.size != 0) and (rightx.size != 0):   
         right_fit_new = np.polyfit(righty, rightx, 2)
+        if (right_fit_old[0] != 0.0) and (np.absolute(right_fit_new[0]) < 0.001):      
+            right_fit_new = [sum(x)/2 for x in zip(right_fit_new, right_fit_old)]
+        elif np.absolute(right_fit_new[0]) >= 0.001:
+            right_fit_new = right_fit_old
+            Detected = False          
     else:
-        right_fit_new = last_right_fit
+        right_fit_new = right_fit_old
         Detected = False
         
-    new_left_curverad, new_right_curverad, new_offset = calculate_curvature_offset(binary_warped, leftx, lefty, rightx, righty,
-                                                                      last_left_curverad, last_right_curverad, last_offset)   
-    
-    return left_fit_new, right_fit_new, left_lane_inds, right_lane_inds, new_left_curverad, new_right_curverad, new_offset, out_img, Detected
+    new_left_curverad, new_right_curverad = calculate_curvature(binary_warped, leftx, lefty, rightx, righty,
+                                                                      last_left_curverad, last_right_curverad)
+
+    return left_fit_new, right_fit_new, left_lane_inds, right_lane_inds, new_left_curverad, new_right_curverad, out_img, Detected
 
 def find_lines(binary_warped, 
-                left_fit, 
-                right_fit,
+                left_fit_old = [0.0,0.0,0.0], 
+                right_fit_old = [0.0,0.0,0.0],
                 last_left_curverad = 0.0, 
-                last_right_curverad = 0.0,
-                last_offset = 0.0):
+                last_right_curverad = 0.0):
     Detected = True
     # Assume you now have a new warped binary image 
     # from the next frame of video (also called "binary_warped")
@@ -298,13 +316,13 @@ def find_lines(binary_warped,
     nonzeroy = np.array(nonzero[0])
     nonzerox = np.array(nonzero[1])
     margin = 100
-    left_lane_inds = ((nonzerox > (left_fit[0]*(nonzeroy**2) + left_fit[1]*nonzeroy + 
-        left_fit[2] - margin)) & (nonzerox < (left_fit[0]*(nonzeroy**2) + 
-        left_fit[1]*nonzeroy + left_fit[2] + margin))) 
+    left_lane_inds = ((nonzerox > (left_fit_old[0]*(nonzeroy**2) + left_fit_old[1]*nonzeroy + 
+        left_fit_old[2] - margin)) & (nonzerox < (left_fit_old[0]*(nonzeroy**2) + 
+        left_fit_old[1]*nonzeroy + left_fit_old[2] + margin))) 
 
-    right_lane_inds = ((nonzerox > (right_fit[0]*(nonzeroy**2) + right_fit[1]*nonzeroy + 
-        right_fit[2] - margin)) & (nonzerox < (right_fit[0]*(nonzeroy**2) + 
-        right_fit[1]*nonzeroy + right_fit[2] + margin)))  
+    right_lane_inds = ((nonzerox > (right_fit_old[0]*(nonzeroy**2) + right_fit_old[1]*nonzeroy + 
+        right_fit_old[2] - margin)) & (nonzerox < (right_fit_old[0]*(nonzeroy**2) + 
+        right_fit_old[1]*nonzeroy + right_fit_old[2] + margin)))  
 
     # Again, extract left and right line pixel positions
     leftx = nonzerox[left_lane_inds]
@@ -314,19 +332,30 @@ def find_lines(binary_warped,
     # Fit a second order polynomial to each
     if (lefty.size != 0) and (leftx.size != 0):
         left_fit_new = np.polyfit(lefty, leftx, 2)
+        if (np.absolute(left_fit_new[0]) < 0.001):      
+            left_fit_new = [sum(x)/2 for x in zip(left_fit_new, left_fit_old)]
+        else:
+            left_fit_new = left_fit_old
+            Detected = False
     else:
-        left_fit_new = left_fit
+        left_fit_new = left_fit_old
         Detected = False
+        
     if (righty.size != 0) and (rightx.size != 0):
         right_fit_new = np.polyfit(righty, rightx, 2)
+        if (np.absolute(right_fit_new[0]) < 0.001):   
+            right_fit_new = [sum(x)/2 for x in zip(right_fit_new, right_fit_old)]
+        else:
+            right_fit_new = right_fit_old
+            Detected = False
     else:
-        right_fit_new = right_fit
+        right_fit_new = right_fit_old
         Detected = False
-    # calculate curvatures and offset
-    new_left_curverad, new_right_curverad, new_offset = calculate_curvature_offset(binary_warped, leftx, lefty, rightx, righty,
-                                                                      last_left_curverad, last_right_curverad, last_offset)
+    # calculate curvatures
+    new_left_curverad, new_right_curverad = calculate_curvature(binary_warped, leftx, lefty, rightx, righty,
+                                                                      last_left_curverad, last_right_curverad)
     
-    return left_fit_new, right_fit_new, left_lane_inds, right_lane_inds, new_left_curverad, new_right_curverad, new_offset, Detected
+    return left_fit_new, right_fit_new, new_left_curverad, new_right_curverad, Detected
 
 def visualization(binary_warped, left_fit, right_fit, left_lane_inds, right_lane_inds, Rectangle_img = None):
     nonzero = binary_warped.nonzero()
@@ -431,24 +460,20 @@ def Pipeline_video(img, M, Minv, mtx, dist, Is_1st_Frame = True,
     warped_img = perspective_img_warp(thesholded_image, M)
     binary_warped = np.array(warped_img,  dtype = "uint8")
     # finding lines
-    if Is_1st_Frame:
-        left_fit_new, right_fit_new, left_lane_inds, right_lane_inds, new_left_curverad, new_right_curverad, new_offset, out_img, Detected = find_lines_in_1st_frame(
-            binary_warped, last_left_fit = left_fit, last_right_fit = right_fit,
+    if Is_1st_Frame == True:
+        left_fit_new, right_fit_new, left_lane_inds, right_lane_inds, new_left_curverad, new_right_curverad, out_img, Detected = find_lines_in_1st_frame(
+            binary_warped, left_fit_old = left_fit, right_fit_old = right_fit,
             last_left_curverad = last_left_curverad,
-            last_right_curverad = last_right_curverad,
-            last_offset = last_offset)
+            last_right_curverad = last_right_curverad)
     else:
-        left_fit_new, right_fit_new, left_lane_inds, right_lane_inds, new_left_curverad, new_right_curverad, new_offset, Detected = find_lines(binary_warped, 
-                                                                                           left_fit, right_fit)
-    # validate the new detected lines
-#     if (abs(new_left_curverad - last_left_curverad) > 800) and (last_left_curverad != 0):
-#         left_fit_new = left_fit
-#         new_left_curverad = last_left_curverad
-#         Detected = False
-#     if (abs(new_right_curverad - last_right_curverad) > 800) and (last_right_curverad != 0):
-#         right_fit_new = right_fit
-#         new_right_curverad = last_right_curverad
-#         Detected = False
+        left_fit_new, right_fit_new, new_left_curverad, new_right_curverad, Detected = find_lines(binary_warped, 
+                                                                                           left_fit, right_fit, 
+                                                                                           last_left_curverad = last_left_curverad,
+                                                                                           last_right_curverad = last_right_curverad)   
+    # calculate 
+    new_offset = Calculate_Offset(binary_warped, left_fit_new, right_fit_new)
+    # average filter for offset value
+    new_offset = (new_offset + last_offset)/2
     # draw lane on image
     drawn_lane = draw_lane(binary_warped,left_fit_new, right_fit_new)
     # inverse perspective transform
@@ -460,20 +485,23 @@ def Pipeline_video(img, M, Minv, mtx, dist, Is_1st_Frame = True,
        
     return left_fit_new,right_fit_new, result_frame, Detected, new_left_curverad, new_right_curverad, new_offset
 
-def Pipeline_image(img, M, mtx, dist, Minv):
+def Pipeline_image(img, M, mtx, dist, Minv, plot_allowed = True):
     # Distortion correction of the input image
     undistorted_img = undistort_img(img, mtx, dist)
-    Plot_Images([img, undistorted_img] , 2,title = 'Original <--> Undistorted')
     # color and gradient threshold
     thesholded_image = color_Gradient_Threshold(undistorted_img)
-    Plot_Images([undistorted_img, thesholded_image] , 2,title = 'Undistorted <--> Thresholded')
     # Perspective transform
     warped_img = perspective_img_warp(thesholded_image, M)
     binary_warped = np.array(warped_img,  dtype = "uint8")
-    Plot_Images([thesholded_image, binary_warped] , 2,title = 'Thresholded <--> Warped')
+    if plot_allowed == True:
+        Plot_Images([img, undistorted_img] , 2,title = 'Original <--> Undistorted')
+        Plot_Images([undistorted_img, thesholded_image] , 2,title = 'Undistorted <--> Thresholded')
+        Plot_Images([thesholded_image, binary_warped] , 2,title = 'Thresholded <--> Warped')
     # finding lines
-    left_fit_new, right_fit_new, left_lane_inds, right_lane_inds, left_curverad, right_curverad, offset, out_img, Detected = find_lines_in_1st_frame(
+    left_fit_new, right_fit_new, left_lane_inds, right_lane_inds, left_curverad, right_curverad, out_img, Detected = find_lines_in_1st_frame(
             binary_warped)
+    
+    new_offset = Calculate_Offset(binary_warped, left_fit_new, right_fit_new)
     
     # Searching window visualization
     visualization(binary_warped, left_fit_new, right_fit_new, left_lane_inds, right_lane_inds, Rectangle_img = out_img)
@@ -484,9 +512,10 @@ def Pipeline_image(img, M, mtx, dist, Minv):
     # inverse perspective transform
     inverse_img = perspective_img_warp(drawn_line, Minv)
     # write information of curvatures and offset on image
-    img = write_Curvature_Offset_On_Image(img, left_curverad, right_curverad, offset)
+    img = write_Curvature_Offset_On_Image(img, left_curverad, right_curverad, new_offset)
     # combine lines image with the original frame
     result_image = cv2.addWeighted(img, 1, inverse_img, 0.3, 0)
+    
     return result_image
 
 def Perform_Calibration(plot_allowed = True):
@@ -508,8 +537,6 @@ def Perform_Calibration(plot_allowed = True):
     return mtx,dist
 
 def Undistortion_Demo(img, mtx, dist, plot_allowed = True):
-    # read 1 test image
-    img = mpimg.imread('./test_images/straight_lines1.jpg')
     # Distortion correction of the input image
     undistorted_img = undistort_img(img, mtx, dist)
     # Plot original and calibrated images
