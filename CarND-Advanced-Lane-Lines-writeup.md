@@ -112,7 +112,7 @@ An example of perspective transformation is shown in the figure below
 
 ## Pipeline (video) ([code here](https://github.com/truongconghiep/CarND-Advanced-Lane-Lines/blob/master/CarND_Advanced_Lane_Lines.py#L420))
 
-Here's a [link to my video result](https://www.youtube.com/watch?v=BPpeH9Xzc-0) or [here](./output_videos/project_video.mp4)
+Here's a [link to my video result](https://www.youtube.com/watch?v=q0y_gtdeVds&feature=youtu.be) or [here](./output_videos/project_video.mp4)
 
  1. Distortion correction
  2. Perform color and gradient thresholding on the original image
